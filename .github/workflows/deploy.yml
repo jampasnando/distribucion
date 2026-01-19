@@ -1,4 +1,4 @@
-name: 🚀 Deploy Laravel src to Hestia
+name: 🚀 Deploy Distribucion src to Hestia
 
 # Se ejecuta cuando hay push a main
 on:
@@ -26,14 +26,14 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no jampasnandox@152.67.44.214 "
             # Rutas
-            TMP_DIR=/tmp/distribuidor_deploy
-            PUBLIC_HTML=/home/jampasnandox/web/distribuidor.com.bo/public_html
+            TMP_DIR=/tmp/distribucion_deploy
+            PUBLIC_HTML=/home/jampasnandox/web/distribucion.com.bo/public_html
 
             # Limpiar carpeta temporal
             rm -rf \$TMP_DIR
 
             # Clonar todo el repo temporalmente
-            git clone https://github.com/jampasnando/distribuidor.git \$TMP_DIR
+            git clone https://github.com/jampasnando/distribucion.git \$TMP_DIR
 
             # Copiar solo src/ a public_html, EXCLUYENDO .env y storage
             rsync -av --delete \
