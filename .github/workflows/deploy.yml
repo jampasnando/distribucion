@@ -1,0 +1,65 @@
+name: 🚀 Deploy Laravel src to Hestia
+
+# Se ejecuta cuando hay push a main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Clonar el repositorio en Actions
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2️⃣ Cargar la clave SSH para conectarse al servidor
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      # 3️⃣ Conectar al servidor y desplegar solo src/
+      - name: Deploy src to Hestia server
+        run: |
+          ssh -o StrictHostKeyChecking=no jampasnandox@152.67.44.214 "
+            # Rutas
+            TMP_DIR=/tmp/distribuidor_deploy
+            PUBLIC_HTML=/home/jampasnandox/web/distribuidor.com.bo/public_html
+
+            # Limpiar carpeta temporal
+            rm -rf \$TMP_DIR
+
+            # Clonar todo el repo temporalmente
+            git clone https://github.com/jampasnando/distribuidor.git \$TMP_DIR
+
+            # Copiar solo src/ a public_html, EXCLUYENDO .env y storage
+            rsync -av --delete \
+              --exclude='.env' \
+              --exclude='storage/' \
+              --exclude='vendor/' \
+              \$TMP_DIR/src/ \$PUBLIC_HTML/
+
+            # Entrar a public_html
+            cd \$PUBLIC_HTML
+
+            # Instalar dependencias de PHP
+            composer install --no-dev --optimize-autoloader
+
+            # Ejecutar migraciones si es necesario (opcional, descomenta si confías)
+            # php artisan migrate --force
+
+            # Limpiar y cachear configuración y rutas
+            php artisan config:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:clear
+            php artisan view:cache
+
+            php artisan storage:link || true
+            
+            # Permisos correctos
+            chmod -R 775 storage bootstrap/cache
+          "
