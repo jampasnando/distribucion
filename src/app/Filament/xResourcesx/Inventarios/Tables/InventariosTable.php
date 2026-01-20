@@ -43,7 +43,7 @@ class InventariosTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('unidad')
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('preciolocal')
+                TextColumn::make('preciocompra')
                     ->numeric()
                     ->visible(fn () => auth()->user()->role === 'administrador')
                     ->sortable()

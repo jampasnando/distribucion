@@ -39,7 +39,7 @@ class InventarioForm
                 TextInput::make('unidad')
                     ->disabled(fn () => auth()->user()->role !== 'administrador')
                     ->visible(fn()=>auth()->user()->role == 'administrador'),
-                TextInput::make('preciolocal')
+                TextInput::make('preciocompra')
                     ->numeric()
                     ->visible(fn () => auth()->user()->role === 'administrador')
                     ->visible(fn()=>auth()->user()->role == 'administrador')

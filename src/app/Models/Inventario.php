@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Inventario extends Model
 {
     //
-    protected $fillable = ['idprod', 'marca', 'cantidad', 'categoria', 'unidad', 'preciolocal', 'precioventa', 'comision', 'deposito', 'proveedor', 'descripcion', 'imagenes', 'img1', 'img2', 'img3'];
+    protected $fillable = ['idprod', 'marca', 'cantidad', 'categoria', 'unidad', 'preciocompra', 'precioventa', 'comision', 'deposito', 'proveedor', 'descripcion', 'imagenes', 'img1', 'img2', 'img3'];
     public function ventas()
     {
         return $this->belongsToMany(Venta::class, 'inventario_venta')

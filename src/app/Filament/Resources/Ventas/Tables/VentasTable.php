@@ -17,14 +17,14 @@ class VentasTable
                     ->dateTime()
                     ->sortable(),
 
-                TextColumn::make('cliente')
+                TextColumn::make('cliente.nombre')
                     ->searchable(),
 
                 TextColumn::make('total')
                     ->money('BOB')
                     ->sortable(),
 
-                TextColumn::make('forma_pago')
+                TextColumn::make('formapago')
                     ->badge(),
             ])
             ->actions([

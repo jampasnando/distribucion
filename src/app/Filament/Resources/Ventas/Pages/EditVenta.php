@@ -18,4 +18,5 @@ class EditVenta extends EditRecord
             DeleteAction::make(),
         ];
     }
+    
 }

@@ -24,4 +24,8 @@ class Cliente extends Model
         'banco',
         'nrocuenta'
     ];
+    public function ventas()
+    {
+        return $this->hasMany(Venta::class, 'cliente_id');
+    }
 }
