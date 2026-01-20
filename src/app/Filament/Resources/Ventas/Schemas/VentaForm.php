@@ -1,13 +1,14 @@
 <?php
-namespace App\Filament\Resources\VentaResource\Schemas;
+namespace App\Filament\Resources\Ventas\Schemas;
 
 use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Repeater;
-use Filament\Schemas\Components\Select;
-use Filament\Schemas\Components\TextInput;
-use Filament\Schemas\Components\DateTimePicker;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DateTimePicker;
 use App\Models\Inventario;
+use Filament\Schemas\Components\Section;
+use Illuminate\Support\Facades\Log;
 
 class VentaForm
 {
@@ -38,7 +39,8 @@ class VentaForm
                         ->dehydrated()
                         ->default(0),
                 ])
-                ->columns(4),
+                ->columns(4)
+                ->columnSpanFull(),
 
             Section::make('Productos')
                 ->schema([
@@ -47,16 +49,19 @@ class VentaForm
                         ->schema([
                             Select::make('inventario_id')
                                 ->label('Producto')
-                                ->options(fn () => Inventario::pluck('nombre', 'id'))
+                                ->options(fn () => Inventario::pluck('descripcion', 'id'))
                                 ->searchable()
                                 ->required()
                                 ->reactive()
                                 ->afterStateUpdated(function ($state, callable $set) {
                                     $producto = Inventario::find($state);
                                     if ($producto) {
-                                        $set('precio_unitario', $producto->precio);
+                                        $set('precioventa', $producto->precioventa);
+                                        $set('cantidad', 1);
+                                        $set('subtotal', $producto->precioventa);
                                     }
-                                }),
+                                })
+                                ->columnSpan(6),
 
                             TextInput::make('cantidad')
                                 ->numeric()
@@ -64,29 +69,34 @@ class VentaForm
                                 ->required()
                                 ->reactive()
                                 ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                    $set('subtotal', ($get('precio_unitario') ?? 0) * $state);
-                                }),
+                                    $set('subtotal', ($get('precioventa') ?? 0) * $state);
+                                })
+                                ->columnSpan(2),
 
-                            TextInput::make('precio_unitario')
+                            TextInput::make('precioventa')
                                 ->numeric()
                                 ->required()
                                 ->reactive()
                                 ->afterStateUpdated(function ($state, callable $get, callable $set) {
                                     $set('subtotal', ($get('cantidad') ?? 0) * $state);
-                                }),
+                                })
+                                ->columnSpan(2),
 
                             TextInput::make('subtotal')
                                 ->numeric()
                                 ->disabled()
-                                ->dehydrated(),
+                                ->dehydrated()
+                                ->columnSpan(2),
                         ])
-                        ->columns(4)
+                        ->columns(12)
                         ->afterStateUpdated(function ($state, callable $set) {
+                            Log::info('Updating total', ['state' => $state]);
                             $set('../../total', collect($state)->sum('subtotal'));
                         })
                         ->createItemButtonLabel('Agregar producto')
                         ->required(),
-                ]),
+                ])
+                ->columnSpanFull(),
         ]);
     }
 }

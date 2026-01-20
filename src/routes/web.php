@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarritoController;
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return redirect('/admin');
 });
 // Route::get('/', [App\Http\Controllers\MarketController::class, 'index'])->name('market.index');
 // Route::get('market', [App\Http\Controllers\MarketController::class, 'index'])->name('market.index');

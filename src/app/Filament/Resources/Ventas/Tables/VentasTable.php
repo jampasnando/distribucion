@@ -1,10 +1,12 @@
 <?php
-namespace App\Filament\Resources\VentaResource\Tables;
+namespace App\Filament\Resources\Ventas\Tables;
 
-use Filament\Tables\Table;
-use Filament\Tables;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
-
+use Filament\Tables\Table;
 class VentasTable
 {
     public static function configure(Table $table): Table
@@ -26,8 +28,8 @@ class VentasTable
                     ->badge(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                ViewAction::make(),
+                EditAction::make(),
             ])
             ->defaultSort('fecha', 'desc');
     }
