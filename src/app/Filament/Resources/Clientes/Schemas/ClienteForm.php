@@ -1,92 +1,47 @@
 <?php
-namespace App\Filament\Resources\VentaResource\Schemas;
 
+namespace App\Filament\Resources\Clientes\Schemas;
+
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Repeater;
-use Filament\Schemas\Components\Select;
-use Filament\Schemas\Components\TextInput;
-use Filament\Schemas\Components\DateTimePicker;
-use App\Models\Inventario;
 
-class VentaForm
+class ClienteForm
 {
     public static function configure(Schema $schema): Schema
     {
-        return $schema->schema([
-            Section::make('Datos de la venta')
-                ->schema([
-                    DateTimePicker::make('fecha')
-                        ->default(now())
-                        ->required(),
-
-                    TextInput::make('cliente')
-                        ->required()
-                        ->maxLength(255),
-
-                    Select::make('forma_pago')
-                        ->options([
-                            'efectivo' => 'Efectivo',
-                            'qr' => 'QR',
-                            'tarjeta' => 'Tarjeta',
-                        ])
-                        ->required(),
-
-                    TextInput::make('total')
-                        ->numeric()
-                        ->disabled()
-                        ->dehydrated()
-                        ->default(0),
-                ])
-                ->columns(4),
-
-            Section::make('Productos')
-                ->schema([
-                    Repeater::make('inventarios')
-                        ->relationship()
-                        ->schema([
-                            Select::make('inventario_id')
-                                ->label('Producto')
-                                ->options(fn () => Inventario::pluck('nombre', 'id'))
-                                ->searchable()
-                                ->required()
-                                ->reactive()
-                                ->afterStateUpdated(function ($state, callable $set) {
-                                    $producto = Inventario::find($state);
-                                    if ($producto) {
-                                        $set('precio_unitario', $producto->precio);
-                                    }
-                                }),
-
-                            TextInput::make('cantidad')
-                                ->numeric()
-                                ->minValue(1)
-                                ->required()
-                                ->reactive()
-                                ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                    $set('subtotal', ($get('precio_unitario') ?? 0) * $state);
-                                }),
-
-                            TextInput::make('precio_unitario')
-                                ->numeric()
-                                ->required()
-                                ->reactive()
-                                ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                    $set('subtotal', ($get('cantidad') ?? 0) * $state);
-                                }),
-
-                            TextInput::make('subtotal')
-                                ->numeric()
-                                ->disabled()
-                                ->dehydrated(),
-                        ])
-                        ->columns(4)
-                        ->afterStateUpdated(function ($state, callable $set) {
-                            $set('../../total', collect($state)->sum('subtotal'));
-                        })
-                        ->createItemButtonLabel('Agregar producto')
-                        ->required(),
-                ]),
-        ]);
+        return $schema
+            ->components([
+                TextInput::make('nombre')
+                    ->required(),
+                TextInput::make('ci')
+                    ->required(),
+                TextInput::make('nit')
+                    ->required(),
+                TextInput::make('telefono')
+                    ->tel()
+                    ->required(),
+                TextInput::make('celular')
+                    ->required(),
+                TextInput::make('latitud')
+                    ->required()
+                    ->numeric(),
+                TextInput::make('longitud')
+                    ->required()
+                    ->numeric(),
+                TextInput::make('ciudad')
+                    ->required(),
+                Textarea::make('direccion')
+                    ->required()
+                    ->columnSpanFull(),
+                TextInput::make('ruta')
+                    ->required(),
+                TextInput::make('circuito')
+                    ->required(),
+                TextInput::make('banco')
+                    ->required(),
+                TextInput::make('nrocuenta')
+                    ->required(),
+            ]);
     }
 }
