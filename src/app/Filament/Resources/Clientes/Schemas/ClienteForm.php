@@ -16,32 +16,22 @@ class ClienteForm
                     ->required(),
                 TextInput::make('ci')
                     ->required(),
-                TextInput::make('nit')
-                    ->required(),
+                TextInput::make('nit'),
                 TextInput::make('telefono')
-                    ->tel()
-                    ->required(),
-                TextInput::make('celular')
-                    ->required(),
+                    ->tel(),
+                TextInput::make('celular'),
                 TextInput::make('latitud')
-                    ->required()
                     ->numeric(),
                 TextInput::make('longitud')
-                    ->required()
                     ->numeric(),
-                TextInput::make('ciudad')
-                    ->required(),
+                TextInput::make('ciudad'),
                 Textarea::make('direccion')
-                    ->required()
                     ->columnSpanFull(),
-                TextInput::make('ruta')
-                    ->required(),
-                TextInput::make('circuito')
-                    ->required(),
-                TextInput::make('banco')
-                    ->required(),
-                TextInput::make('nrocuenta')
-                    ->required(),
-            ]);
+                TextInput::make('ruta'),
+                TextInput::make('circuito'),
+                TextInput::make('banco'),
+                TextInput::make('nrocuenta'),
+            ])
+            ->columns(4);
     }
 }
