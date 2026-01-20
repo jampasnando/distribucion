@@ -19,7 +19,7 @@ class CreateVenta extends CreateRecord
         
     //     return $data;
     // }
-    protected function afterSave(): void
+    protected function afterCreate(): void
     {
         $venta = $this->record;  // La venta recién creada
         $data = $this->form->getState();  // Obtén los datos del formulario

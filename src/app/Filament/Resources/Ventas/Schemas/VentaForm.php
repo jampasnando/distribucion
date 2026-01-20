@@ -77,7 +77,7 @@ class VentaForm
                                         'pagocomision' => $inventario->pivot->pagocomision,
                                         'descripcion' => $inventario->pivot->descripcion,
                                         'cantidad' => $inventario->pivot->cantidad,
-                                        'subtotal' => $inventario->pivot->cantidad * $inventario->pivot->precioventa,
+                                        'subtotal' => $inventario->pivot->cantidad * $inventario->pivot->preciofinal,
                                     ];
                                 })->toArray();
                                 $set('inventarios', $inventarios);  // Pobla el repeater con los datos existentes
@@ -115,13 +115,14 @@ class VentaForm
                                 ->required()
                                 ->reactive()
                                 ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                    $set('subtotal', ($get('precioventa') ?? 0) * $state);
+                                    $set('subtotal', ($get('preciofinal') ?? 0) * $state);
                                     $inventarios = $get('../../inventarios');
                                         $set('../../total', collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0));
                                 })
                                 ->columnSpan(2),
 
-                            TextInput::make('precioventa')
+                            TextInput::make('preciofinal')
+                                 ->label('Precio Venta')
                                 ->numeric()
                                 ->required()
                                 ->reactive()
