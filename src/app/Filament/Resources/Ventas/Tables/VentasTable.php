@@ -5,7 +5,7 @@ use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 
-class VentaTable
+class VentasTable
 {
     public static function configure(Table $table): Table
     {
