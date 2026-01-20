@@ -17,7 +17,7 @@ class InventariosTable
             ->columns([
                 TextColumn::make('idprod')
                     ->searchable(),
-                TextColumn::make('marca')
+                TextColumn::make('marca.nombre')
                     ->searchable(),
                 TextColumn::make('cantidad')
                     ->numeric()

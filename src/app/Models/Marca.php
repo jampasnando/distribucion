@@ -8,4 +8,8 @@ class Marca extends Model
 {
     //
     protected $fillable = ['nombre', 'pais', 'logo'];
+    public function inventarios()
+    {
+        return $this->hasMany(Inventario::class);
+    }
 }

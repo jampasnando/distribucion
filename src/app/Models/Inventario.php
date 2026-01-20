@@ -14,5 +14,9 @@ class Inventario extends Model
             ->withPivot(['cantidad', 'precioventa', 'preciocompra','preciofinal','comision','vendedor_id','pagocomision','descripcion'])
             ->withTimestamps();
     }
+    public function marca()
+    {
+        return $this->belongsTo(Marca::class);
+    }
 }
 
