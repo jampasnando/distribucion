@@ -9,7 +9,7 @@ use App\Filament\Resources\Proveedores\Pages\ViewProveedore;
 use App\Filament\Resources\Proveedores\Schemas\ProveedoreForm;
 use App\Filament\Resources\Proveedores\Schemas\ProveedoreInfolist;
 use App\Filament\Resources\Proveedores\Tables\ProveedoresTable;
-use App\Models\Proveedore;
+use App\Models\Proveedor;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -18,7 +18,7 @@ use Filament\Tables\Table;
 
 class ProveedoreResource extends Resource
 {
-    protected static ?string $model = Proveedore::class;
+    protected static ?string $model = Proveedor::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
@@ -40,7 +40,7 @@ class ProveedoreResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\InventariosRelationManager::class,
         ];
     }
 
