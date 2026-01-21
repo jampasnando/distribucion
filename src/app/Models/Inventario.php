@@ -18,5 +18,9 @@ class Inventario extends Model
     {
         return $this->belongsTo(Marca::class);
     }
+    public function proveedor()
+    {
+        return $this->belongsTo(Proveedor::class);
+    }
 }
 

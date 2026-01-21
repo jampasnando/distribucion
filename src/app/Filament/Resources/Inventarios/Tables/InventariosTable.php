@@ -38,7 +38,7 @@ class InventariosTable
                 TextColumn::make('deposito')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('proveedor')
+                TextColumn::make('proveedor.nombre')
                     ->searchable(),
                 TextColumn::make('img1')
                     ->searchable(),
