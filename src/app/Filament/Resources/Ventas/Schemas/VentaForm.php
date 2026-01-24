@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Cliente;
 use App\Models\Venta;
 use Illuminate\Support\Str;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Textarea;
+use Carbon\Carbon;
 
 class VentaForm
 {
@@ -19,6 +22,18 @@ class VentaForm
     {
         return $schema->schema([
             Section::make('Datos de la venta')
+                ->afterStateHydrated(function ($state, callable $set, $record) {
+                        // Log::info('Hydrating credit section', ['record' => $record->credito]);
+                        // Log::info('Hydrating credit section', ['record' => $record->credito->fechavencimiento]);
+                        // Log::info('Hydrating fechavencimiento Carbon section', ['record' => Carbon::parse($record->credito->fechavencimiento)]);
+                        if ($record && $record->exists) {
+                            $set('fechavencimiento', Carbon::parse($record->credito->fechavencimiento));
+                            $set('saldo', $record->credito->saldo);
+                            $set('total', $record->credito->total);
+                            $set('anticipo', $record->credito->total - $record->credito->saldo);
+                            $set('detalles', $record->credito->detalles);
+                        }
+                    })
                 ->schema([
                     DateTimePicker::make('fecha')
                         ->default(now())
@@ -32,11 +47,13 @@ class VentaForm
 
                     Select::make('formapago')
                         ->options([
-                            'efectivo' => 'Efectivo',
-                            'qr' => 'QR',
-                            'tarjeta' => 'Tarjeta',
+                            'contado' => 'Contado',
+                            // 'qr' => 'QR',
+                            // 'tarjeta' => 'Tarjeta',
+                            'credito' => 'Crédito',
                         ])
-                        ->default('efectivo')
+                        ->default('contado')
+                        ->reactive()
                         ->required(),
                     TextInput::make('deposito_id')  // Campo oculto para deposito_id
                         ->hidden()
@@ -59,7 +76,31 @@ class VentaForm
                 ])
                 ->columns(4)
                 ->columnSpanFull(),
-
+            Section::make('Crédito')
+                ->description('')
+                ->visible(fn (callable $get) => $get('formapago') === 'credito')
+                ->schema([
+                    DatePicker::make('fechavencimiento')
+                        ->label('Fecha de vencimiento')
+                        // ->required()
+                        ->minDate(now()->addDay())
+                        ->reactive(),
+                        // ->extraAttributes(['style' => 'background:lightyellow;text-color:black;']),
+                    TextInput::make('anticipo')
+                        ->label('Anticipo')
+                        ->numeric()
+                        ->default(0)
+                        ->minValue(0)
+                        ->reactive(),
+                        // ->extraAttributes(['style' => 'background:lightyellow;']),
+                    Textarea::make('detalles')
+                        ->columnSpan(2)
+                        ->reactive(),
+                        // ->extraAttributes(['style' => 'background:whitegoldenrod;']),
+                ])
+                ->columns(4)
+                ->extraAttributes(['style' => 'background:lightyellow;padding:10px;border-radius:10px;'])
+                ->columnSpanFull(),
             Section::make('Productos')
                 ->schema([
                     Repeater::make('inventarios')

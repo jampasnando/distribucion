@@ -38,8 +38,23 @@ class EditVenta extends EditRecord
                 'descripcion' => $item['descripcion'],
             ];
         }
-
         $venta->inventarios()->sync($syncData);
+
+        // if(($data['formapago'] ?? '') === 'credito') {
+        //     $anticipo = (float) ($data['anticipo'] ?? 0);
+        //     $saldoInicial = $venta->total - $anticipo;
+
+        //     // 1️⃣ Crear crédito
+        //     $credito = Credito::create([
+        //         'venta_id' => $venta->id,
+        //         'cliente_id' => $venta->cliente_id,
+        //         'total' => $venta->total,
+        //         'saldo' => $saldoInicial,
+        //         'fechainicio' => now(),
+        //         'fechavencimiento' => $data['fechavencimiento'],
+        //         'estado' => $saldoInicial > 0 ? 'activo' : 'cancelado',
+        //     ]);
+        // }
     }
 
 }
