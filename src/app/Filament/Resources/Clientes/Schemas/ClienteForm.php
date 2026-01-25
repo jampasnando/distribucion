@@ -29,8 +29,8 @@ class ClienteForm
                     ->columnSpanFull(),
                 TextInput::make('ruta'),
                 TextInput::make('circuito'),
-                TextInput::make('banco'),
-                TextInput::make('nrocuenta'),
+                // TextInput::make('banco'),
+                // TextInput::make('nrocuenta'),
             ])
             ->columns(4);
     }

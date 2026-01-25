@@ -23,8 +23,8 @@ class ClienteInfolist
                 TextEntry::make('ciudad'),
                 TextEntry::make('ruta'),
                 TextEntry::make('circuito'),
-                TextEntry::make('banco'),
-                TextEntry::make('nrocuenta'),
+                // TextEntry::make('banco'),
+                // TextEntry::make('nrocuenta'),
                 TextEntry::make('created_at')
                     ->dateTime(),
                 TextEntry::make('updated_at')

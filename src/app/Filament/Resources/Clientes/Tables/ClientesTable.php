@@ -37,10 +37,10 @@ class ClientesTable
                     ->searchable(),
                 TextColumn::make('circuito')
                     ->searchable(),
-                TextColumn::make('banco')
-                    ->searchable(),
-                TextColumn::make('nrocuenta')
-                    ->searchable(),
+                // TextColumn::make('banco')
+                //     ->searchable(),
+                // TextColumn::make('nrocuenta')
+                //     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

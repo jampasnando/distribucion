@@ -21,8 +21,8 @@ class Cliente extends Model
         'direccion',
         'ruta',
         'circuito',
-        'banco',
-        'nrocuenta'
+        // 'banco',
+        // 'nrocuenta'
     ];
     public function ventas()
     {
