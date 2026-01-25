@@ -20,7 +20,7 @@ class Venta extends Model
     public function inventarios()
     {
         return $this->belongsToMany(Inventario::class, 'inventario_venta')
-            ->withPivot(['cantidad', 'precioventa', 'preciocompra','preciofinal','comision','vendedor_id','pagocomision','descripcion','idprod'])
+            ->withPivot(['cantidad', 'precioventa', 'preciocompra','preciofinal','comision','vendedor_id','pagocomision','descripcion','idprod', 'descuento'])
             ->withTimestamps();
     }
     public function cliente()

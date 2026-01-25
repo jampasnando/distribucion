@@ -37,6 +37,7 @@ class CreateVenta extends CreateRecord
                 'vendedor_id' => $item['vendedor_id'],
                 'pagocomision' => $item['pagocomision'],
                 'descripcion' => $item['descripcion'],
+                'descuento' => $item['descuento'],
                 // Agrega otros campos del pivot si es necesario, como 'preciocompra', etc.
             ]);
         }

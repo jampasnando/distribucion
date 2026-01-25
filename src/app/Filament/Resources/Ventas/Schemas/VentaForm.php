@@ -26,7 +26,7 @@ class VentaForm
                         // Log::info('Hydrating credit section', ['record' => $record->credito]);
                         // Log::info('Hydrating credit section', ['record' => $record->credito->fechavencimiento]);
                         // Log::info('Hydrating fechavencimiento Carbon section', ['record' => Carbon::parse($record->credito->fechavencimiento)]);
-                        if ($record && $record->exists) {
+                        if ($record && $record->credito && $record->exists) {
                             $set('fechavencimiento', Carbon::parse($record->credito->fechavencimiento));
                             $set('saldo', $record->credito->saldo);
                             $set('total', $record->credito->total);
@@ -118,6 +118,7 @@ class VentaForm
                                         'pagocomision' => $inventario->pivot->pagocomision,
                                         'descripcion' => $inventario->pivot->descripcion,
                                         'cantidad' => $inventario->pivot->cantidad,
+                                        'descuento' => $inventario->pivot->descuento,
                                         'subtotal' => $inventario->pivot->cantidad * $inventario->pivot->preciofinal,
                                     ];
                                 })->toArray();
@@ -142,14 +143,18 @@ class VentaForm
                                         $set('vendedor_id', auth()->user()->id);
                                         $set('pagocomision', NULL);
                                         $set('descripcion', $producto->descripcion);
+                                        $set('stock', $producto->cantidad);
                                         $set('cantidad', 1);
                                         $set('subtotal', $producto->precioventa);
                                         $inventarios = $get('../../inventarios');
                                         $set('../../total', collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0));
                                     }
                                 })
-                                ->columnSpan(6),
-
+                                ->columnSpan(5),
+                            TextInput::make('stock')
+                                ->label('Stock')
+                                ->disabled()
+                                ->dehydrated(false),
                             TextInput::make('cantidad')
                                 ->numeric()
                                 ->minValue(1)
@@ -159,12 +164,12 @@ class VentaForm
                                     $set('subtotal', ($get('preciofinal') ?? 0) * $state);
                                     $inventarios = $get('../../inventarios');
                                         $set('../../total', collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0));
-                                })
-                                ->columnSpan(2),
+                                }),
 
                             TextInput::make('preciofinal')
-                                 ->label('Precio Venta')
+                                 ->label('Precio')
                                 ->numeric()
+                                ->disabled()
                                 ->required()
                                 ->reactive()
                                 ->afterStateUpdated(function ($state, callable $get, callable $set) {
@@ -172,15 +177,26 @@ class VentaForm
                                     $inventarios = $get('../../inventarios');
                                         $set('../../total', collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0));
                                 })
+                                ->dehydrated()
                                 ->columnSpan(2),
-                            // TextInput::make('preciocompra')
-                            //     ->hidden()
-                            //     ->numeric()
-                            //     ->dehydrated(),
+                            TextInput::make('descuento')
+                                ->label('Desc. %')
+                                ->numeric()
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                    $precioFinal = $get('precioventa') - $get('precioventa') * $state / 100;
+                                    $set('preciofinal', $precioFinal);
+                                    $set('subtotal', ($get('cantidad') ?? 0) * $precioFinal);
+                                    $inventarios = $get('../../inventarios');
+                                        $set('../../total', collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0));
+                                })
+                                ->default(0)
+                                ->dehydrated(),
                             TextInput::make('subtotal')
                                 ->numeric()
                                 ->disabled()
                                 ->dehydrated()
+                                ->default(0)
                                 ->columnSpan(2),
                         ])
                         ->columns(12)

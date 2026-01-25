@@ -36,6 +36,7 @@ class EditVenta extends EditRecord
                 'vendedor_id' => $item['vendedor_id'],
                 'pagocomision' => $item['pagocomision'],
                 'descripcion' => $item['descripcion'],
+                'descuento' => $item['descuento']
             ];
         }
         $venta->inventarios()->sync($syncData);
