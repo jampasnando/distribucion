@@ -128,7 +128,23 @@ class VentaForm
                         ->schema([
                             Select::make('inventario_id')
                                 ->label('Producto')
-                                ->options(fn () => Inventario::pluck('descripcion', 'id'))
+                                ->getSearchResultsUsing(function (string $search) {
+                                    return Inventario::query()
+                                        ->where(function ($q) use ($search) {
+                                            $q->where('descripcion', 'like', "%{$search}%")
+                                            ->orWhere('idprod', 'like', "%{$search}%");
+                                        })
+                                        ->limit(20)
+                                        ->get()
+                                        ->mapWithKeys(fn ($i) => [
+                                            $i->id => "{$i->idprod} — {$i->descripcion}"
+                                        ]);
+                                })
+                                ->getOptionLabelUsing(fn ($value) =>
+                                    optional(Inventario::find($value))->idprod
+                                        . ' — ' .
+                                    optional(Inventario::find($value))->descripcion
+                                )
                                 ->searchable()
                                 ->required()
                                 ->reactive()
