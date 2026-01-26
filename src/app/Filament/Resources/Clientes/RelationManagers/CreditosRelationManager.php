@@ -42,17 +42,27 @@ class CreditosRelationManager extends RelationManager
                 TextColumn::make('id')
                     ->label('N°'),
 
-                TextColumn::make('total')
-                    ->money('BOB'),
+                TextColumn::make('total'),
+                    // ->money('BOB'),
 
-                TextColumn::make('anticipo')
-                    ->money('BOB'),
+                TextColumn::make('anticipo'),
+                    // ->money('BOB'),
 
                 TextColumn::make('saldo')
-                    ->money('BOB')
+                    ->label('Deuda')
+                    // ->money('BOB')
                     ->color(fn ($state) => $state > 0 ? 'danger' : 'success')
                     ->weight('bold'),
-
+                TextColumn::make('pagos_totales')
+                    ->label('Pagos')
+                    ->getStateUsing(fn ($record) => $record->pagos()->sum('monto'))
+                    // ->money('BOB')  // si quieres que Formate Filament
+                    ->sortable(),
+                TextColumn::make('saldo_restante')
+                    ->label('Saldo')
+                    ->getStateUsing(fn ($record) => $record->total - $record->pagos()->sum('monto'))
+                    // ->money('BOB')
+                    ->sortable(),
                 TextColumn::make('fechainicio')
                     ->label('Inicio')
                     ->date(),
@@ -69,7 +79,7 @@ class CreditosRelationManager extends RelationManager
                 BadgeColumn::make('estado')
                     ->colors([
                         'warning' => 'pendiente',
-                        'success' => 'pagado',
+                        'success' => 'cancelado',
                         'danger'  => 'vencido',
                     ]),
             ])
