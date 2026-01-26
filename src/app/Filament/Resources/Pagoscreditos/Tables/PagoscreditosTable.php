@@ -1,46 +1,30 @@
 <?php
 
-namespace App\Filament\Resources\Clientes\Tables;
+namespace App\Filament\Resources\Pagoscreditos\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ClientesTable
+class PagoscreditosTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('nombre')
-                    ->searchable(),
-                TextColumn::make('ci')
-                    ->searchable(),
-                TextColumn::make('nit')
-                    ->searchable(),
-                TextColumn::make('telefono')
-                    ->searchable(),
-                TextColumn::make('celular')
-                    ->searchable(),
-                TextColumn::make('latitud')
+                TextColumn::make('credito_id')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('longitud')
+                TextColumn::make('monto')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('ciudad')
+                TextColumn::make('fechapago')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('metodopago')
                     ->searchable(),
-                TextColumn::make('ruta')
-                    ->searchable(),
-                TextColumn::make('circuito')
-                    ->searchable(),
-                // TextColumn::make('banco')
-                //     ->searchable(),
-                // TextColumn::make('nrocuenta')
-                //     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -54,8 +38,6 @@ class ClientesTable
                 //
             ])
             ->recordActions([
-                ViewAction::make()
-                ->label('Kardex'),
                 EditAction::make(),
             ])
             ->toolbarActions([

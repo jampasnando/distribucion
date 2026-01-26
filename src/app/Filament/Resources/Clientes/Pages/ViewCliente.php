@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Clientes\Pages;
 use App\Filament\Resources\Clientes\ClienteResource;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Resources\Clientes\Widgets\KardexCliente;
 
 class ViewCliente extends ViewRecord
 {
@@ -14,6 +15,14 @@ class ViewCliente extends ViewRecord
     {
         return [
             EditAction::make(),
+        ];
+    }
+    protected function getFooterWidgets(): array
+    {
+        return [
+            KardexCliente::make([
+                'clienteId' => $this->record->id,
+            ]),
         ];
     }
 }

@@ -1,46 +1,39 @@
 <?php
 
-namespace App\Filament\Resources\Clientes\Tables;
+namespace App\Filament\Resources\Creditos\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ClientesTable
+class CreditosTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('nombre')
-                    ->searchable(),
-                TextColumn::make('ci')
-                    ->searchable(),
-                TextColumn::make('nit')
-                    ->searchable(),
-                TextColumn::make('telefono')
-                    ->searchable(),
-                TextColumn::make('celular')
-                    ->searchable(),
-                TextColumn::make('latitud')
+                TextColumn::make('venta_id')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('longitud')
+                TextColumn::make('cliente_id')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('ciudad')
+                TextColumn::make('total')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('saldo')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('fechainicio')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('fechavencimiento')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('estado')
                     ->searchable(),
-                TextColumn::make('ruta')
-                    ->searchable(),
-                TextColumn::make('circuito')
-                    ->searchable(),
-                // TextColumn::make('banco')
-                //     ->searchable(),
-                // TextColumn::make('nrocuenta')
-                //     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -49,13 +42,14 @@ class ClientesTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('anticipo')
+                    ->numeric()
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->recordActions([
-                ViewAction::make()
-                ->label('Kardex'),
                 EditAction::make(),
             ])
             ->toolbarActions([

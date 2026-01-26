@@ -43,6 +43,7 @@ class ClienteResource extends Resource
     {
         return [
             //
+            RelationManagers\CreditosRelationManager::class
         ];
     }
 

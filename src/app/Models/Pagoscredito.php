@@ -13,4 +13,9 @@ class Pagoscredito extends Model
         'metodopago',
         'comentarios',
     ];
+    public function credito()
+    {
+        return $this->belongsTo(Credito::class, 'credito_id');
+    }
+
 }

@@ -28,4 +28,9 @@ class Cliente extends Model
     {
         return $this->hasMany(Venta::class, 'cliente_id');
     }
+    public function creditos()
+    {
+        return $this->hasMany(Credito::class);
+    }
+
 }

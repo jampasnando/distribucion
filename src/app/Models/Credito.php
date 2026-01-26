@@ -16,6 +16,8 @@ class Credito extends Model
         'fechainicio',
         'fechavencimiento',
         'estado',
+        'anticipo',
+        'detalles'
     ];
 
     public function venta()
