@@ -19,6 +19,10 @@ class PagoscreditosTable
                 TextColumn::make('credito_id')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('credito.fechainicio')
+                    ->label('Fecha Inicio')
+                    ->date()
+                    ->sortable(),
                 TextColumn::make('monto')
                     ->numeric()
                     ->sortable(),

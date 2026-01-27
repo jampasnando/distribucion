@@ -17,8 +17,7 @@ class CreditosTable
                 TextColumn::make('venta_id')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('cliente_id')
-                    ->numeric()
+                TextColumn::make('cliente.nombre')
                     ->sortable(),
                 TextColumn::make('total')
                     ->numeric()
@@ -31,6 +30,11 @@ class CreditosTable
                     ->sortable(),
                 TextColumn::make('fechavencimiento')
                     ->dateTime()
+                    ->color(fn ($record) =>
+                        now()->greaterThan($record->fechavencimiento) && $record->saldo > 0
+                            ? 'danger'
+                            : null
+                    )
                     ->sortable(),
                 TextColumn::make('estado')
                     ->searchable(),

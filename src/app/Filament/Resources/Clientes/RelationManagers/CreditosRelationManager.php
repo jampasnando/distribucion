@@ -62,6 +62,8 @@ class CreditosRelationManager extends RelationManager
                     ->label('Saldo')
                     ->getStateUsing(fn ($record) => $record->total - $record->pagos()->sum('monto'))
                     // ->money('BOB')
+                    ->badge()
+                    ->color(fn($record) => $record->total - $record->pagos()->sum('monto') <= 0 ? 'success':'warning')
                     ->sortable(),
                 TextColumn::make('fechainicio')
                     ->label('Inicio')
