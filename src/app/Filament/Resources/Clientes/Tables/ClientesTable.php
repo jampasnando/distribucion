@@ -7,7 +7,11 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
+use Filament\Actions\Action;
+use Filament\Support\Enums\Alignment;
+use Filament\Support\Icons\Heroicon;
 
 class ClientesTable
 {
@@ -25,12 +29,29 @@ class ClientesTable
                     ->searchable(),
                 TextColumn::make('celular')
                     ->searchable(),
-                TextColumn::make('latitud')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('longitud')
-                    ->numeric()
-                    ->sortable(),
+                IconColumn::make('latitud')
+                    ->label('Ubicación')
+                    ->icon('heroicon-o-map-pin')
+                    ->color('info')
+                    ->alignCenter()
+                    ->action(
+                        Action::make('ver_mapa')
+                            ->label('Ubicación')
+                            ->icon('heroicon-o-map-pin')
+                            ->color('info')
+                            ->modalHeading('Ubicación del cliente')
+                            ->modalWidth('xl')
+                            ->modalAlignment(Alignment::Center)
+                            ->modalContent(fn ($record) => view(
+                                'filament.modals.mapa-cliente',
+                                [
+                                    'lat' => $record->latitud,
+                                    'lng' => $record->longitud,
+                                    'cliente' => $record->nombre,
+                                ]
+                            ))
+                            ->visible(fn ($record) => $record->latitud && $record->longitud),
+                    ),
                 TextColumn::make('ciudad')
                     ->searchable(),
                 TextColumn::make('ruta')
