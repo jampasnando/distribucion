@@ -1,21 +1,22 @@
 <?php
 namespace App\Filament\Resources\Ventas\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Filters\Filter;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
-use Filament\Tables\Table;
-use Filament\Tables;
-use App\Filament\Resources\Clientes\Pages\ViewCliente;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\Filter;
+use App\Filament\Resources\Clientes\Pages\ViewCliente;
 
 class VentasTable
 {
-    
+
     public static function configure(Table $table): Table
     {
         return $table
@@ -69,9 +70,22 @@ class VentasTable
             //             }
             //         }),
             // ])
-            ->actions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                Action::make('nota')
+                    ->label('Nota')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->url(fn ($record) =>
+                        $record
+                            ? route('ventas.nota', ['venta' => $record->id])
+                            : null
+                    )
+                    ->visible(fn ($record) => filled($record))
+                    ->openUrlInNewTab()
+            ])
+            ->headerActions([
+
             ])
             ->defaultSort('fecha', 'desc');
     }

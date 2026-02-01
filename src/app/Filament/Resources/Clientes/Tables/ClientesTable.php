@@ -42,6 +42,8 @@ class ClientesTable
                             ->modalHeading('Ubicación del cliente')
                             ->modalWidth('xl')
                             ->modalAlignment(Alignment::Center)
+                            ->modalSubmitAction(false)
+                            ->modalCancelAction(false)
                             ->modalContent(fn ($record) => view(
                                 'filament.modals.mapa-cliente',
                                 [

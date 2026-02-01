@@ -16,9 +16,11 @@ class MarcasTable
         return $table
             ->columns([
                 TextColumn::make('nombre')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('pais')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -27,7 +29,8 @@ class MarcasTable
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('logo')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //

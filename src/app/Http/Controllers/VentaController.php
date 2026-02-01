@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Venta;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class VentaController extends Controller
 {
@@ -62,4 +63,17 @@ class VentaController extends Controller
     {
         //
     }
+
+
+    public function notaVenta(Venta $venta)
+    {
+        // return $venta;
+        $venta->load(['cliente', 'inventarios']);
+
+        $pdf = Pdf::loadView('pdf.nota-venta', compact('venta'));
+
+        return $pdf->stream("nota-venta-{$venta->id}.pdf");
+    }
+
+
 }

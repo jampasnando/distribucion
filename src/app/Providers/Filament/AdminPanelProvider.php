@@ -19,7 +19,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Enums\ThemeMode;
-
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -60,6 +61,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->assets([
+                Css::make('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'),
+                Js::make('leaflet-js', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'),
             ]);
     }
 }
