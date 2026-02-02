@@ -12,24 +12,23 @@ class InventarioInfolist
         return $schema
             ->components([
                 TextEntry::make('idprod'),
-                TextEntry::make('marca'),
+                TextEntry::make('marca.nombre'),
+                TextEntry::make('descripcion'),
                 TextEntry::make('cantidad')
                     ->numeric(),
-                TextEntry::make('categoria'),
-                TextEntry::make('unidad'),
                 TextEntry::make('preciocompra')
                     ->numeric(),
                 TextEntry::make('precioventa')
                     ->numeric(),
                 TextEntry::make('comision')
                     ->numeric(),
-                TextEntry::make('deposito'),
-                TextEntry::make('proveedor'),
+                TextEntry::make('proveedor.nombre'),
                 TextEntry::make('img1'),
-                TextEntry::make('img2'),
-                TextEntry::make('img3'),
+                TextEntry::make('created_at')
+                    ->dateTime(),
                 TextEntry::make('updated_at')
                     ->dateTime(),
-            ]);
+            ])
+            ->columns(4);
     }
 }

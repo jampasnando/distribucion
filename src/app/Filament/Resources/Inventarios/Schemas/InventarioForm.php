@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\Inventarios\Schemas;
 
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
+use App\Models\Marca;
+use App\Models\Proveedor;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 
 class InventarioForm
 {
@@ -15,7 +18,11 @@ class InventarioForm
                 TextInput::make('idprod'),
                 Textarea::make('descripcion')
                     ->columnSpanFull(),
-                TextInput::make('marca'),
+                Select::make('marca_id')  // Cambiar a Select
+                        ->label('Marca')
+                        ->options(fn () => Marca::pluck('nombre', 'id'))  // Asumiendo que el modelo Proveedor tiene 'id' y 'nombre'; ajusta si es diferente
+                        ->searchable()
+                        ->required(),
                 TextInput::make('cantidad')
                     ->numeric()
                     ->default(0),
@@ -30,13 +37,22 @@ class InventarioForm
                 TextInput::make('comision')
                     ->numeric()
                     ->default(0),
-                TextInput::make('deposito'),
-                TextInput::make('proveedor'),
+                TextInput::make('deposito')
+                    ->default(1)
+                    ->visible(false),
+                Select::make('proveedor_id')  // Cambiar a Select
+                        ->label('Proveedor')
+                        ->options(fn () => Proveedor::pluck('nombre', 'id'))  // Asumiendo que el modelo Proveedor tiene 'id' y 'nombre'; ajusta si es diferente
+                        ->searchable()
+                        ->required(),
                 Textarea::make('imagenes')
-                    ->columnSpanFull(),
+                    ->visible(false),
                 TextInput::make('img1'),
-                TextInput::make('img2'),
-                TextInput::make('img3'),
-            ]);
+                TextInput::make('img2')
+                ->visible(false),
+                TextInput::make('img3')
+                ->visible(false),
+            ])
+            ->columns(5);
     }
 }

@@ -11,10 +11,12 @@ use App\Filament\Resources\Inventarios\Schemas\InventarioInfolist;
 use App\Filament\Resources\Inventarios\Tables\InventariosTable;
 use App\Models\Inventario;
 use BackedEnum;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class InventarioResource extends Resource
 {
@@ -40,7 +42,8 @@ class InventarioResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\VentasRelationManager::class,
+            RelationManagers\OfertasRelationManager::class
         ];
     }
 
@@ -52,5 +55,17 @@ class InventarioResource extends Resource
             'view' => ViewInventario::route('/{record}'),
             'edit' => EditInventario::route('/{record}/edit'),
         ];
+    }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->with([
+                'ofertas' => function ($query) {
+                    $query
+                        ->where('activo', true)
+                        ->whereDate('fecha_inicio', '<=', now())
+                        ->whereDate('fecha_fin', '>=', now());
+                }
+            ]);
     }
 }

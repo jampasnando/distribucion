@@ -180,10 +180,11 @@ class VentaForm
                                 ->minValue(1)
                                 ->required()
                                 ->reactive()
-                                ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                                ->afterStateUpdated(function ($state, callable $get, callable $set,$record) {
                                     $set('subtotal', ($get('preciofinal') ?? 0) * $state);
                                     $inventarios = $get('../../inventarios');
                                         $set('../../total', collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0));
+
                                 }),
 
                             TextInput::make('preciofinal')
@@ -196,13 +197,20 @@ class VentaForm
                                     $set('subtotal', ($get('cantidad') ?? 0) * $state);
                                     $inventarios = $get('../../inventarios');
                                         $set('../../total', collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0));
+
                                 })
                                 ->dehydrated()
-                                ->extraAttributes(fn($record) =>
-                                            $record && $record->ofertaActiva
-                                            ? ['styel'=>'background:lightyellow;']
-                                            : []
-                                )
+                                // ->extraAttributes(function($record){
+                                //     if($record){
+                                //         $producto = Inventario::find($record->id);
+                                //         Log::info('prducto: ',['producto' => $producto]);
+                                //         if($producto){
+                                //             return ['style'=>'background:lightyellow;'];
+                                //         }
+                                //         return [];
+                                //     }
+                                //     return [];
+                                // })
                                 ->columnSpan(2),
                             TextInput::make('descuento')
                                 ->label('Desc. %')

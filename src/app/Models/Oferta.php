@@ -13,5 +13,8 @@ class Oferta extends Model
         'fecha_fin',
         'activo'
     ];
-    
+    public function inventario()
+    {
+        return $this->belongsTo(Inventario::class);
+    }
 }

@@ -18,20 +18,46 @@ class InventariosTable
                 TextColumn::make('idprod')
                     ->searchable(),
                 TextColumn::make('marca.nombre')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('descripcion')
+                    ->searchable()
+                    ->limit(25)
+                    ->tooltip(fn($state) => $state),
                 TextColumn::make('cantidad')
+                    ->label('Cant')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('categoria')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('unidad')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('preciocompra')
+                    ->label('Pcompra')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('precioventa')
+                    ->label('Pventa')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('oferta')
+                    ->badge()
+                    ->label('Oferta')
+                    ->getStateUsing(fn ($record) =>
+                        $record?->ofertas?->isNotEmpty() ? 'EN OFERTA' : null
+                    )
+                    ->colors([
+                        'danger' => 'EN OFERTA',
+                    ])
+                    ->tooltip(function($record){
+                        return $record?->ofertas?->isNotEmpty() ? $record->ofertas->first()->precio_oferta : null;
+                    }),
+                    // ->visible(fn ($record) =>
+                    //     $record?->ofertas?->isNotEmpty()
+                    // ),
+
                 TextColumn::make('comision')
                     ->numeric()
                     ->sortable(),
@@ -39,7 +65,8 @@ class InventariosTable
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('proveedor.nombre')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('img1')
                     ->searchable(),
                 TextColumn::make('created_at')
