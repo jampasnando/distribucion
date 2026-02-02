@@ -22,5 +22,17 @@ class Inventario extends Model
     {
         return $this->belongsTo(Proveedor::class);
     }
+    public function ofertas()
+    {
+        return $this->hasMany(Oferta::class);
+    }
+
+    public function ofertaActiva()
+    {
+        return $this->hasOne(Oferta::class)
+            ->where('activo', 1)
+            ->whereDate('fecha_inicio', '<=', now())
+            ->whereDate('fecha_fin', '>=', now());
+    }
 }
 

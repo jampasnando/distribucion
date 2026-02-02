@@ -154,7 +154,11 @@ class VentaForm
                                         $set('idprod', $producto->idprod);
                                         $set('precioventa', $producto->precioventa);
                                         $set('preciocompra', $producto->preciocompra);
-                                        $set('preciofinal', $producto->precioventa);
+                                        $precio = $producto->ofertaActiva
+                                            ? $producto->ofertaActiva->precio_oferta
+                                            : $producto->precioventa;
+                                        // $set('preciofinal', $producto->precioventa);
+                                        $set('preciofinal', $precio);
                                         $set('comision', $producto->comision);
                                         $set('vendedor_id', auth()->user()->id);
                                         $set('pagocomision', NULL);
@@ -194,6 +198,11 @@ class VentaForm
                                         $set('../../total', collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0));
                                 })
                                 ->dehydrated()
+                                ->extraAttributes(fn($record) =>
+                                            $record && $record->ofertaActiva
+                                            ? ['styel'=>'background:lightyellow;']
+                                            : []
+                                )
                                 ->columnSpan(2),
                             TextInput::make('descuento')
                                 ->label('Desc. %')
