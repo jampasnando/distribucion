@@ -18,6 +18,7 @@ class InventariosTable
                 TextColumn::make('idprod')
                     ->searchable(),
                 TextColumn::make('marca.nombre')
+                    ->label('Marca')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('descripcion')
