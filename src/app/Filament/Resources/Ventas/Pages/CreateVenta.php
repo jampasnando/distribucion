@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Ventas\Pages;
 use App\Filament\Resources\Ventas\VentaResource;
 use Filament\Resources\Pages\CreateRecord;
 use App\Models\Credito;
+use App\Models\Inventario;
 use App\Models\Pagoscredito;
 
 class CreateVenta extends CreateRecord
@@ -40,6 +41,11 @@ class CreateVenta extends CreateRecord
                 'descuento' => $item['descuento'],
                 // Agrega otros campos del pivot si es necesario, como 'preciocompra', etc.
             ]);
+
+            $inventario = Inventario::find($item['inventario_id']);
+            if ($inventario) {
+                $inventario->decrement('cantidad', $item['cantidad']);
+            }
         }
 
         if(($data['formapago'] ?? '') === 'credito') {
