@@ -132,7 +132,7 @@ class VentaForm
                                     return Inventario::query()
                                         ->where(function ($q) use ($search) {
                                             $q->where('descripcion', 'like', "%{$search}%")
-                                            ->orWhere('idprod', 'like', "%{$search}%");
+                                            ->orWhere('idprod', 'like', "%{$search}%"); 
                                         })
                                         ->limit(20)
                                         ->get()
