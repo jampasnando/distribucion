@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Compras\Pages;
 
 use App\Filament\Resources\Compras\CompraResource;
 use Filament\Resources\Pages\CreateRecord;
+use App\Models\Inventario;
 
 class CreateCompra extends CreateRecord
 {
@@ -20,6 +21,13 @@ class CreateCompra extends CreateRecord
                 'preciocompra' => $item['preciocompra'],
                 'descripcion' => $item['descripcion'],
             ]);
+
+            // Actualizar el inventario: aumentar cantidad y actualizar preciocompra
+            $inventario = Inventario::find($item['inventario_id']);
+            if ($inventario) {
+                $inventario->increment('cantidad', $item['cantidad']);
+                $inventario->update(['preciocompra' => $item['preciocompra']]);
+            }
         }
     }
 }
