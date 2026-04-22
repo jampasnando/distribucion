@@ -120,9 +120,9 @@ class CompraForm
                                         $set('preciocompra', $producto->preciocompra);
                                         $set('descripcion', $producto->descripcion);
                                         $set('cantidad', 1);
-                                        $set('subtotal', $producto->preciocompra);
+                                        $set('subtotal', round($producto->preciocompra, 2));
                                         $inventarios = $get('../../inventarios');
-                                        $set('../../total', collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0));
+                                        $set('../../total', round(collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0), 2));
                                     }
                                 })
                                 ->columnSpan(6),
@@ -131,11 +131,11 @@ class CompraForm
                                 ->numeric()
                                 ->minValue(1)
                                 ->required()
-                                ->reactive()
+                                ->live(onBlur: true)
                                 ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                    $set('subtotal', ($get('preciocompra') ?? 0) * $state);
+                                    $set('subtotal', round(($get('preciocompra') ?? 0) * $state, 2));
                                     $inventarios = $get('../../inventarios');
-                                        $set('../../total', collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0));
+                                        $set('../../total', round(collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0), 2));
                                 })
                                 ->columnSpan(2),
 
@@ -143,11 +143,11 @@ class CompraForm
                                  ->label('Precio Compra')
                                 ->numeric()
                                 ->required()
-                                ->reactive()
+                                ->live(onBlur: true)
                                 ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                                    $set('subtotal', ($get('cantidad') ?? 0) * $state);
+                                    $set('subtotal', round(($get('cantidad') ?? 0) * $state, 2));
                                     $inventarios = $get('../../inventarios');
-                                        $set('../../total', collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0));
+                                        $set('../../total', round(collect($inventarios)->sum(fn ($item) => $item['subtotal'] ?? 0), 2));
                                 })
                                 ->columnSpan(2),
                             TextInput::make('subtotal')
@@ -159,9 +159,9 @@ class CompraForm
                         ->columns(12)
                         ->afterStateUpdated(function ($state, callable $set) {
                             // Log::info('Updating total', ['state' => $state]);
-                            $set('total', collect($state)->sum('subtotal'));
+                            $set('total', round(collect($state)->sum('subtotal'), 2));
                         })
-                        ->createItemButtonLabel('Agregar producto')
+                        ->addActionLabel('Agregar producto')
                         ->required(),
                 ])
                 ->columnSpanFull(),
