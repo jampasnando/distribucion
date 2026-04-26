@@ -23,13 +23,19 @@ class UserForm
                 TextInput::make('password')
                     ->password()
                     ->required(),
-                Select::make('role')
-                    ->options([
-                        'admin' => 'Admin',
-                        'vendedor' => 'Vendedor',
-                    ])
-                    ->required()
-                    ->default('vendedor'),
+                // Select::make('role')
+                //     ->options([
+                //         'admin' => 'Admin',
+                //         'vendedor' => 'Vendedor',
+                //     ])
+                //     ->required()
+                //     ->default('vendedor'),
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
+                                
             ]);
     }
 }

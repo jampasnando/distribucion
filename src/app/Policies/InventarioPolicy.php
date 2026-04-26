@@ -1,66 +1,75 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
+use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\Inventario;
-use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class InventarioPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    use HandlesAuthorization;
+    
+    public function viewAny(AuthUser $authUser): bool
     {
-        return true;
+        return $authUser->can('ViewAny:Inventario');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Inventario $inventario): bool
+    public function view(AuthUser $authUser, Inventario $inventario): bool
     {
-        return true;
+        return $authUser->can('View:Inventario');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->role === 'administrador';
+        return $authUser->can('Create:Inventario');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Inventario $inventario): bool
+    public function update(AuthUser $authUser, Inventario $inventario): bool
     {
-        return true;
+        return $authUser->can('Update:Inventario');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Inventario $inventario): bool
+    public function delete(AuthUser $authUser, Inventario $inventario): bool
     {
-        return $user->role === 'administrador';
+        return $authUser->can('Delete:Inventario');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Inventario $inventario): bool
+    public function deleteAny(AuthUser $authUser): bool
     {
-        return true;
+        return $authUser->can('DeleteAny:Inventario');
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Inventario $inventario): bool
+    public function restore(AuthUser $authUser, Inventario $inventario): bool
     {
-        return true;
+        return $authUser->can('Restore:Inventario');
     }
+
+    public function forceDelete(AuthUser $authUser, Inventario $inventario): bool
+    {
+        return $authUser->can('ForceDelete:Inventario');
+    }
+
+    public function forceDeleteAny(AuthUser $authUser): bool
+    {
+        return $authUser->can('ForceDeleteAny:Inventario');
+    }
+
+    public function restoreAny(AuthUser $authUser): bool
+    {
+        return $authUser->can('RestoreAny:Inventario');
+    }
+
+    public function replicate(AuthUser $authUser, Inventario $inventario): bool
+    {
+        return $authUser->can('Replicate:Inventario');
+    }
+
+    public function reorder(AuthUser $authUser): bool
+    {
+        return $authUser->can('Reorder:Inventario');
+    }
+
 }

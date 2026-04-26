@@ -36,6 +36,7 @@ class InventariosTable
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('preciocompra')
+                    ->visible(fn()=>auth()->user()->hasRole('Administrador'))
                     ->label('Pcompra')
                     ->numeric()
                     ->sortable(),

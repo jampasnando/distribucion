@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Inventarios\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
+use Illuminate\Validation\Rules\Can;
 
 class InventarioInfolist
 {
@@ -17,6 +18,7 @@ class InventarioInfolist
                 TextEntry::make('cantidad')
                     ->numeric(),
                 TextEntry::make('preciocompra')
+                    ->visible(fn()=>auth()->user()->hasRole('Administrador'))
                     ->numeric(),
                 TextEntry::make('precioventa')
                     ->numeric(),
