@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Venta;
+use App\Models\Vendedor;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
 
-class VentaController extends Controller
+class VendedorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,7 +34,7 @@ class VentaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Venta $venta)
+    public function show(Vendedor $vendedor)
     {
         //
     }
@@ -43,7 +42,7 @@ class VentaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Venta $venta)
+    public function edit(Vendedor $vendedor)
     {
         //
     }
@@ -51,7 +50,7 @@ class VentaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Venta $venta)
+    public function update(Request $request, Vendedor $vendedor)
     {
         //
     }
@@ -59,21 +58,8 @@ class VentaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Venta $venta)
+    public function destroy(Vendedor $vendedor)
     {
         //
     }
-
-
-    public function notaVenta(Venta $venta)
-    {
-        // return $venta;
-        $venta->load(['cliente', 'inventarios','vendedor']);
-        dd($venta);
-        $pdf = Pdf::loadView('pdf.nota-venta', compact('venta'))->setPaper('letter');
-
-        return $pdf->stream("nota-venta-{$venta->id}.pdf");
-    }
-
-
 }

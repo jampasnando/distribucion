@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Vendedor;
 use Illuminate\Database\Eloquent\Model;
 
 class Venta extends Model
@@ -15,7 +16,9 @@ class Venta extends Model
         'estado',
         'idventa',
         'deposito_id',
-        'formapago'
+        'formapago',
+        'user_id',
+        'vendedor_id'
     ];
     public function inventarios()
     {
@@ -30,5 +33,9 @@ class Venta extends Model
     public function credito()
     {
         return $this->hasOne(Credito::class, 'venta_id');
+    }
+    public function vendedor()
+    {
+        return $this->belongsTo(Vendedor::class,'vendedor_id');
     }
 }

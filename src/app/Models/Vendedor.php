@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Vendedor extends Model
+{
+    protected $table='vendedores';
+    public function ventas()
+    {
+        $this->hasMany(Venta::class);
+    }
+}

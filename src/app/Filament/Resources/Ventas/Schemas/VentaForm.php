@@ -1,20 +1,22 @@
 <?php
 namespace App\Filament\Resources\Ventas\Schemas;
 
-use Filament\Schemas\Schema;
+use App\Models\Cliente;
+use App\Models\Inventario;
+use App\Models\User;
+use App\Models\Venta;
+use Carbon\Carbon;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DateTimePicker;
-use App\Models\Inventario;
-use Filament\Schemas\Components\Section;
-use Illuminate\Support\Facades\Log;
-use App\Models\Cliente;
-use App\Models\Venta;
-use Illuminate\Support\Str;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
-use Carbon\Carbon;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class VentaForm
 {
@@ -35,10 +37,17 @@ class VentaForm
                         }
                     })
                 ->schema([
+                    Hidden::make('user_id')
+                        ->default(fn()=>auth()->user()->id),
                     DateTimePicker::make('fecha')
                         ->default(now())
+                        ->native(false)
+                        ->displayFormat('d-m-Y')
                         ->required(),
-
+                    Select::make('vendedor_id')
+                        ->label('Vendedor')
+                        ->options(fn() => User::pluck('name','id'))
+                        ->default(fn() => auth()->user()->id),
                     Select::make('cliente_id')  // Cambiar a Select
                         ->label('Cliente')
                         ->options(fn () => Cliente::pluck('nombre', 'id'))  // Asumiendo que el modelo Cliente tiene 'id' y 'nombre'; ajusta si es diferente
@@ -55,26 +64,22 @@ class VentaForm
                         ->default('contado')
                         ->reactive()
                         ->required(),
-                    TextInput::make('deposito_id')  // Campo oculto para deposito_id
-                        ->hidden()
-                        ->default(1)
-                        ->dehydrated(),
-                    TextInput::make('idventa')  // Campo oculto para idventa
-                        ->hidden()
+                    Hidden::make('deposito_id')  // Campo oculto para deposito_id
+                        ->default(1),
+                    Hidden::make('idventa')  // Campo oculto para idventa
                         ->default(function () {
                             do {
                                 $code = Str::random(8);  // Genera un string alfanumérico de 8 caracteres
                             } while (Venta::where('idventa', $code)->exists());  // Asegura unicidad
                             return $code;
-                        })
-                        ->dehydrated(),
+                        }),
                     TextInput::make('total')
                         ->numeric()
                         ->disabled()
                         ->dehydrated()
                         ->default(0),
                 ])
-                ->columns(4)
+                ->columns(5)
                 ->columnSpanFull(),
             Section::make('Crédito')
                 ->description('')
@@ -132,7 +137,7 @@ class VentaForm
                                     return Inventario::query()
                                         ->where(function ($q) use ($search) {
                                             $q->where('descripcion', 'like', "%{$search}%")
-                                            ->orWhere('idprod', 'like', "%{$search}%"); 
+                                            ->orWhere('idprod', 'like', "%{$search}%");
                                         })
                                         ->limit(20)
                                         ->get()
