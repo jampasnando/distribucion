@@ -68,8 +68,8 @@ class VentaController extends Controller
     public function notaVenta(Venta $venta)
     {
         // return $venta;
-        $venta->load(['cliente', 'inventarios','vendedor']);
-        dd($venta);
+        $venta->load(['cliente', 'inventarios']);
+        // dd($venta);
         $pdf = Pdf::loadView('pdf.nota-venta', compact('venta'))->setPaper('letter');
 
         return $pdf->stream("nota-venta-{$venta->id}.pdf");

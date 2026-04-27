@@ -189,8 +189,8 @@
 
 <!-- DETALLE -->
 <p class="small">
-    <strong>DETALLE:</strong> Venta por Web |
-    <strong>N° DE LOTE(S):</strong> 27, 39
+    {{-- <strong>DETALLE:</strong> Venta por Web |
+    <strong>N° DE LOTE(S):</strong> 27, 39 --}}
 </p>
 
 <!-- FIRMAS -->

@@ -36,6 +36,6 @@ class Venta extends Model
     }
     public function vendedor()
     {
-        return $this->belongsTo(Vendedor::class,'vendedor_id');
+        return $this->belongsTo(User::class,'vendedor_id');
     }
 }
