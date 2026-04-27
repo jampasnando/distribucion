@@ -85,7 +85,7 @@
             <td>
                 <div style='text-align:left'>
                 {{-- <strong>EL OFERTON FERRETERIA ONLINE COCHABAMBA</strong><br> --}}
-                <strong>IRMÃO</strong>
+                <strong>IRMÃO</strong><br>
                 Av. Beijing entre 15 de Agosto y Av. Topater<br>
                 Telf.: 62606092<br>
                 Cercado, Cochabamba
