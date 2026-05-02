@@ -20,6 +20,23 @@ class Venta extends Model
         'user_id',
         'vendedor_id'
     ];
+
+    protected static function booted()
+    {
+        static::deleting(function ($venta) {
+
+            foreach ($venta->inventarios as $inventario) {
+                $cantidad = $inventario->pivot->cantidad;
+
+                // 🔁 devolver stock
+                $inventario->increment('cantidad', $cantidad);
+            }
+
+            // opcional pero recomendado
+            $venta->inventarios()->detach();
+        });
+    }
+
     public function inventarios()
     {
         return $this->belongsToMany(Inventario::class, 'inventario_venta')
