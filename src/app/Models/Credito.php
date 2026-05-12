@@ -28,7 +28,7 @@ class Credito extends Model
     {
         return $this->belongsTo(Cliente::class, 'cliente_id');
     }
-    public function pagos()
+    public function pagoscreditos()
     {
         return $this->hasMany(Pagoscredito::class, 'credito_id');
     }

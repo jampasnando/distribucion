@@ -43,6 +43,7 @@ class VentasTable
                         'warning' => 'contado',
                     ]),
             ])
+            ->defaultSort('fecha', 'desc')
             // ->filters([
             //     SelectFilter::make('formapago')
             //         ->label('Tipo de venta')

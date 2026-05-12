@@ -11,6 +11,7 @@ use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -27,11 +28,22 @@ class PagoscreditosRelationManager extends RelationManager
         return $schema
             ->components([
                 TextInput::make('credito_id')
+                    ->default(fn ($livewire) => $livewire->ownerRecord->id)
+                    ->disabled()
+                    ->dehydrated()
                     ->numeric(),
                 TextInput::make('monto')
                     ->numeric(),
-                DateTimePicker::make('fechapago'),
-                TextInput::make('metodopago'),
+                DateTimePicker::make('fechapago')
+                    ->default(now()),
+                Select::make('metodopago')
+                    ->options([
+                        'efectivo' => 'Efectivo',
+                        'transferencia' => 'Transferencia',
+                        'tarjeta' => 'Tarjeta',
+                        'qr' => 'QR',
+                    ])
+                    ->default('efectivo'),
                 Textarea::make('comentarios')
                     ->columnSpanFull(),
             ]);
@@ -67,16 +79,16 @@ class PagoscreditosRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make(),
-                AssociateAction::make(),
+                // AssociateAction::make(),
             ])
             ->recordActions([
                 EditAction::make(),
-                DissociateAction::make(),
+                // DissociateAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DissociateBulkAction::make(),
+                    // DissociateBulkAction::make(),
                     DeleteBulkAction::make(),
                 ]),
             ]);
