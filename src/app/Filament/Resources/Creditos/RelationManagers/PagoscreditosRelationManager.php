@@ -22,7 +22,8 @@ use Filament\Tables\Table;
 class PagoscreditosRelationManager extends RelationManager
 {
     protected static string $relationship = 'pagoscreditos';
-
+    protected static ?string $recordTitleAttribute = 'fechapago';
+    protected static ?string $title = 'Pagos del Crédito';
     public function form(Schema $schema): Schema
     {
         return $schema
@@ -78,7 +79,8 @@ class PagoscreditosRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->label('Registrar Pago'),
                 // AssociateAction::make(),
             ])
             ->recordActions([
