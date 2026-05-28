@@ -18,14 +18,16 @@ class CreatePagoscredito extends CreateRecord
     }
     protected function afterCreate(): void
     {
-        $pago = $this->record; // El pago recién creado
-        $credito = $pago->credito; // Relación Eloquent con Credito
+        $pago = $this->record;
+        $credito = $pago->credito;
 
-        // Suma total de pagos
-        $totalPagos = $credito->pagos()->sum('monto');
+        if (! $credito) {
+            return;
+        }
 
-        // Si los pagos cubren o superan el total del crédito
-        if ($totalPagos >= $credito->total) {
+        $totalPagos = $credito->pagoscreditos()->sum('monto');
+
+        if ($totalPagos >= $credito->saldo) {
             $credito->update([
                 'estado' => 'cancelado',
             ]);

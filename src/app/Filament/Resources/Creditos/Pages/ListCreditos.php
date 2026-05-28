@@ -22,13 +22,19 @@ class ListCreditos extends ListRecords
     public function getTabs(): array
     {
         return [
-            
+
             'Activos' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('estado', 'activo'))
-                ->badge(Credito::query()->where('estado', 'activo')->count()),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('estado', 'activo')
+                ->where('fechavencimiento','>=',now()))
+                ->badge(Credito::query()->where('estado', 'activo')->where('fechavencimiento','>=',now())->count()),
             'Cancelados' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('estado', 'cancelado'))
                 ->badge(Credito::query()->where('estado', 'cancelado')->count()),
+            'Vencidos' => Tab::make()
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('fechavencimiento','<',now())
+                ->where('estado','!=','cancelado'))
+                ->badge(Credito::query()->where('fechavencimiento','<',now())
+                ->where('estado','!=','cancelado')->count()),
             'Todo' => Tab::make(),
         ];
     }
