@@ -2,10 +2,14 @@
 
 namespace App\Filament\Resources\Inventarios\Tables;
 
+use App\Filament\Exports\InventarioExporter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
 use Filament\Actions\ViewAction;
+use Filament\Exports\ExportColumn;
+use Filament\Exports\Exporter;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -91,6 +95,10 @@ class InventariosTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(InventarioExporter::class),
             ]);
     }
 }
