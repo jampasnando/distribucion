@@ -1,18 +1,20 @@
 <?php
 namespace App\Filament\Resources\Ventas\Tables;
 
-use Filament\Tables;
-use Filament\Tables\Table;
+use App\Filament\Exports\InventarioVentaExporter;
+use App\Filament\Resources\Clientes\Pages\ViewCliente;
 use Filament\Actions\Action;
-use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
-use Filament\Tables\Filters\Filter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
+use Filament\Actions\ViewAction;
+use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
-use App\Filament\Resources\Clientes\Pages\ViewCliente;
+use Filament\Tables\Table;
 
 class VentasTable
 {
@@ -86,7 +88,8 @@ class VentasTable
                     ->openUrlInNewTab()
             ])
             ->headerActions([
-
+                ExportAction::make()
+                    ->exporter(InventarioVentaExporter::class),
             ])
             ->defaultSort('fecha', 'desc');
     }
