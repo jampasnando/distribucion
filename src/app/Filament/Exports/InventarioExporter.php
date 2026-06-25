@@ -19,7 +19,8 @@ class InventarioExporter extends Exporter
                 ->label('ID'),
             ExportColumn::make('idprod'),
             ExportColumn::make('descripcion'),
-            ExportColumn::make('marca_id'),
+            ExportColumn::make('marca.nombre')
+                ->label('Marca'),
             ExportColumn::make('cantidad'),
             ExportColumn::make('categoria'),
             ExportColumn::make('unidad'),
@@ -27,7 +28,8 @@ class InventarioExporter extends Exporter
             ExportColumn::make('precioventa'),
             ExportColumn::make('comision'),
             ExportColumn::make('deposito'),
-            ExportColumn::make('proveedor_id'),
+            ExportColumn::make('proveedor.nombre')
+                ->label('Proveedor'),
             // ExportColumn::make('imagenes'),
             // ExportColumn::make('img1'),
             // ExportColumn::make('img2'),
@@ -39,12 +41,16 @@ class InventarioExporter extends Exporter
 
     public static function getCompletedNotificationBody(Export $export): string
     {
-        $body = 'Your inventario export has completed and ' . Number::format($export->successful_rows) . ' ' . str('row')->plural($export->successful_rows) . ' exported.';
+        $body = 'El inventario se ha exportado con ' . Number::format($export->successful_rows) . ' ' . str('fila')->plural($export->successful_rows) . ' exportadas.';
 
         if ($failedRowsCount = $export->getFailedRowsCount()) {
-            $body .= ' ' . Number::format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to export.';
+            $body .= ' ' . Number::format($failedRowsCount) . ' ' . str('fila')->plural($failedRowsCount) . ' fallaron al exportar.';
         }
 
         return $body;
+    }
+    public function getFileName(Export $export): string
+    {
+        return 'inventarios_' . now()->format('dmY_His');
     }
 }
